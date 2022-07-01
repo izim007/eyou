@@ -29,6 +29,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Token.TokenResponse login(Token.TokenRequest request) throws JsonProcessingException {
 
+        System.out.println("---------Token.TokenResponse login---------");
+
         Optional<UserEntity> entity = userRepository.findBySnsId(request.getSnsId());
 
         System.out.println("entity : " + entity);

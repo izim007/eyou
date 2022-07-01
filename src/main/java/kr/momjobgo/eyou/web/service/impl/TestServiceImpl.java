@@ -1,7 +1,9 @@
 package kr.momjobgo.eyou.web.service.impl;
 
+import groovy.transform.ToString;
 import kr.momjobgo.eyou.web.jpa.entity.TestEntity;
 import kr.momjobgo.eyou.web.jpa.entity.TestJoinEntity;
+import kr.momjobgo.eyou.web.jpa.entity.UserEntity;
 import kr.momjobgo.eyou.web.jpa.repository.TestJoinRepository;
 import kr.momjobgo.eyou.web.jpa.repository.TestRepository;
 import kr.momjobgo.eyou.web.service.TestService;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@ToString
 public class TestServiceImpl implements TestService {
 
     private final TestRepository testRepository;
@@ -40,9 +43,12 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public TestEntity getTest(Long id) {
-
+        System.out.println("-----1---------------");
         Optional<TestEntity> testEntity = testRepository.findById(id);
 
+        System.out.println("getTest Start");
+        System.out.println(testEntity.toString().toString());
+        System.out.println("getTest End");
         if(testEntity.isPresent()){
             return testEntity.get();
         } else {

@@ -23,7 +23,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Token.TokenRequest request) throws JsonProcessingException {
+        System.out.println("AuthController login");
         return ResponseEntity.ok().body(userService.login(request));
+    }
+
+    @PostMapping("/login/kakao")
+    public ResponseEntity<?> createAuthenticationTokenByKakao(@RequestBody SocialLoginDto socialLoginDto) throws Exception {
+        //api 인증을 통해 얻어온 code값 받아오기
+        String username = userService.kakaoLogin(socialLoginDto.getToken());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        final String token = jwtTokenUtil.generateToken(userDetails);
+        return ResponseEntity.ok(new JwtResponse(token, userDetails.getUsername()));
     }
 
 }
