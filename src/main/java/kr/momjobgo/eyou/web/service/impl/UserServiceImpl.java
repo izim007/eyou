@@ -29,23 +29,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public Token.TokenResponse login(Token.TokenRequest request) throws JsonProcessingException {
 
-        System.out.println("---------Token.TokenResponse login---------");
-
         Optional<UserEntity> entity = userRepository.findBySnsId(request.getSnsId());
 
-        System.out.println("entity : " + entity);
-
-        String token = null;
+        Token.TokenResponse tokenResponse = new Token.TokenResponse();
 
         if(entity.isPresent()){
-            token = JwtTokenProvider.generateToken(entity.get());
+            tokenResponse.setToken(JwtTokenProvider.generateToken(entity.get()));
         } else {
             UserEntity newUser = new UserEntity();
             newUser.setSnsId(request.getSnsId());
-            token = JwtTokenProvider.generateToken(userRepository.save(newUser));
+            newUser.setNickname(request.getNickname());
+            tokenResponse.setToken(JwtTokenProvider.generateToken(userRepository.save(newUser)));
         }
 
-        return Token.TokenResponse.builder().token(token).build();
+        Optional<UserEntity> entity2 = userRepository.findBySnsId(request.getSnsId());
+        tokenResponse.setId(entity2.get().getId());
+
+        return tokenResponse;
     }
 
 }

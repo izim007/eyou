@@ -25,5 +25,7 @@ public class Token {
     @AllArgsConstructor
     public static final class TokenResponse {
         private String token;
+        private Long id;
+
     }
 }
